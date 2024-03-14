@@ -13,6 +13,8 @@ public class AviaSoulsTest {
     Ticket tickets3 = new Ticket("Мордер", "Шир", 7_000, 11, 13);
     Ticket tickets4 = new Ticket("Мордер", "Шир", 2_000, 15, 16);
     Ticket tickets5 = new Ticket("Мордер", "Шир", 1_000, 9, 10);
+    Ticket tickets6 = new Ticket("Винтерфелл", "Королевская гавань", 2_500, 2, 19);
+    Ticket tickets7 = new Ticket("Винтерфелл", "Королевская гавань", 1_000, 3, 15);
 
     @Test
     public void shouldCompareByPrice() {
@@ -63,8 +65,44 @@ public class AviaSoulsTest {
 
         service.add(tickets1);
         service.add(tickets2);
+        service.add(tickets6);
 
         Ticket[] expected = {tickets2, tickets1};
         Ticket[] actual = service.searchAndSortBy("Мордер", "Шир", comp);
+    }
+
+    @Test
+    public void shouldFindWithoutComparatorSomeTickets() {
+        AviaSouls service = new AviaSouls();
+
+        service.add(tickets1);
+        service.add(tickets2);
+        service.add(tickets7);
+
+        Ticket[] expected = {tickets1, tickets2};
+        Ticket[] actual = service.search("Мордер", "Шир");
+    }
+
+    @Test
+    public void shouldFindWithoutComparatorOneTicket() {
+        AviaSouls service = new AviaSouls();
+
+        service.add(tickets1);
+        service.add(tickets6);
+        service.add(tickets7);
+
+        Ticket[] expected = {tickets1};
+        Ticket[] actual = service.search("Мордер", "Шир");
+    }
+
+    @Test
+    public void shouldNotFindTicketsWithoutComparator() {
+        AviaSouls service = new AviaSouls();
+
+        service.add(tickets6);
+        service.add(tickets7);
+
+        Ticket[] expected = {};
+        Ticket[] actual = service.search("Мордер", "Шир");
     }
 }
